@@ -21,6 +21,9 @@ public class UsuarioServiceImpl implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder encoder;
 	
+	@Autowired
+	private JwtService service;
+	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		String senhaCript = encoder.encode(usuario.getSenha());
@@ -32,6 +35,15 @@ public class UsuarioServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = repositorio.findByLogin(username)
 				.orElseThrow(() -> new UsernameNotFoundException("Usuario não encontrado na base"));
+		
+		
+		String token = service.gerarToken(usuario);
+		System.out.println(token);
+		
+		boolean tokenValido = service.tokenValido(token);
+		System.out.println(tokenValido);
+		
+		System.out.println(service.obterLoginUsuario(token));
 		
 		String[] roles = usuario.isAdmin() ? 
 				new String[] {"ADMIN", "USER"} : new String[] {"USER"};
