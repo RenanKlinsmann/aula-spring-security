@@ -27,6 +27,14 @@ public class Usuario {
 	
 	public Usuario() {}
 
+	
+
+	public Usuario(String login, String senha) {
+		super();
+		this.login = login;
+		this.senha = senha;
+	}
+
 
 	public Usuario(Integer id, String login, String senha, boolean admin) {
 		super();
